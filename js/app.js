@@ -127,7 +127,7 @@ var Player = function() {
                         'images/char-horn-girl.png',
                         'images/char-pink-girl.png',
                         'images/char-princess-girl.png'];
-    this.sprite = 'images/char-boy.png';
+    this.sprite = this.avatar_list[0];
     this.pos_col = 2;       // col 0-4
     this.pos_row = 5;       // row 0-5
     this.centroid_x = 0;
@@ -139,10 +139,14 @@ var Player = function() {
     this._COL_WIDTH = 101;
     this._ROW_HEIGHT = 83;
     this._RADIUS = 35;
+
+    // load resources and set initial position
+    Resources.load(this.avatar_list);
+    this.moveTo(this.pos_col, this.pos_row);
 };
 
 Player.prototype.update = function(dt) {
-    this.moveTo(this.pos_col, this.pos_row);
+    // not used
 };
 
 //-- Draw the player on the screen
@@ -166,6 +170,8 @@ Player.prototype.handleInput = function(keycode) {
     else if (keycode=="down"  && this.pos_row<5) { this.pos_row += 1; }
     else if (keycode=="right" && this.pos_col<4) { this.pos_col += 1; }
     else if (keycode=="left"  && this.pos_col>0) { this.pos_col -= 1; }
+    else if (keycode=="space") { this.changeAvatar(); }
+    this.moveTo(this.pos_col, this.pos_row);
 };
 
 //-- Move the player to a specific position on the grid [0-4, 0-5]
@@ -185,36 +191,33 @@ Player.prototype.moveTo = function(col, row) {
 
 Player.prototype.changeAvatar = function() {
     l = this.avatar_list.length;
-    this.sprite = this.avatar_list[rnd(l-1)];
-    // TODO: need to fix loading resources dynamically
+    idx = this.avatar_list.indexOf(this.sprite);
+    this.sprite = this.avatar_list[(idx+1)%l];
 };
 
 Player.prototype.reset = function() {
     this.moveTo(2, 5);
 };
 
-Player.prototype.setScore = function(elem, score) {
-    var e = document.getElementById(elem);
+Player.prototype.setScore = function(elem_id, score) {
+    var e = document.getElementById(elem_id);
     e.innerHTML = score;
 };
 
 
 
 //-----------------------------------
-// initialize elements
 //
 
-// 4 enemies, one in each lane, plus one randomly placed
+// initialize 4 enemies, one in each lane + one randomly placed
 var allEnemies = [];
 allEnemies.push(new Enemy(1));
 allEnemies.push(new Enemy(2));
 allEnemies.push(new Enemy(3));
 allEnemies.push(new Enemy(1 + Math.floor(Math.random()*3)));
 
-while(!Resources.isReady()){;};
-
+// initialize player
 var player = new Player();
-
 
 // ------------------------------------
 // Auxiliary functions
