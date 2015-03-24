@@ -13,6 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
+var paused;
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -27,6 +28,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
+    paused = false;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -57,6 +59,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
+
     };
 
     /* This function does some initial setup that should only occur once,
@@ -79,8 +82,9 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
+        if (paused) return;
         updateEntities(dt);
-        // checkCollisions();
+        //checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -104,6 +108,7 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
+        if (paused) return;
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */

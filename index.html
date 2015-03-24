@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Effective JavaScript: Frogger</title>
+    <title>Bug Frogger</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
+    <br>
+    <div class="footer">
+        <div class="column-left">
+            Bugs: <div id="score-bugs">0</div>
+        </div>
+        <div class="column-center">
+            <button type="pause" onclick="pause_resume();">Pause/Resume</button>
+        </div>
+        <div class="column-right">
+            You: <div id="score-human">0</div>
+        </div>
+    </div>
 </body>
 </html>
